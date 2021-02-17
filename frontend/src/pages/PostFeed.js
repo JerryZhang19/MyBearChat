@@ -19,11 +19,11 @@ function PostFeed(props) {
     ;
   }
 
-  const [content, setContent] = useState('');
+  const [postBody, setPostBody] = useState('');
 
   const send = (e) => {
     e.preventDefault();
-    request('POST', `http://${HOST}:81/api/posts/create`, {}, JSON.stringify({ content }))
+    request('POST', `http://${HOST}:81/api/posts/create`, {}, JSON.stringify({ postBody }))
       .then((res) => {
         console.log(res.status);
         swal({
@@ -53,9 +53,10 @@ function PostFeed(props) {
       postsHtml.push(
         <Card style={{ width: '35rem' }} key={idx}>
           <Card.Body>
-            <Card.Title><a href={`/profile/${post.authorID}`}>User ID {post.authorID}</a></Card.Title>
+            <Card.Title><a href={`/profile/${post.authorID}`}>User ID {post.AuthorID}</a></Card.Title>
             <Card.Subtitle className="mb-2 text-muted">Posted at {post.postTime}</Card.Subtitle>
-            <Card.Text>{post.content}</Card.Text>
+            <Card.Text>{post.postBody}</Card.Text>
+
           </Card.Body>
         </Card>
       );
@@ -102,7 +103,7 @@ function PostFeed(props) {
             as="textarea"
             name="content"
             placeholder="Share your thoughts..."
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => setPostBody(e.target.value)}
           />
         </Form.Group>
         <Button variant="primary" type="submit">

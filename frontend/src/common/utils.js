@@ -42,5 +42,5 @@ export function request(method, url, qs, body) {
   });
 }
 
-export const HOST = "<EC2 IP>";
+export const HOST = "localhost";
 

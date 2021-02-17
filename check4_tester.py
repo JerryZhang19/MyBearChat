@@ -9,7 +9,7 @@ def fail(msg):
     print('error:', msg)
 
 def extract_uuid(cookies):
-    decoded = jwt.decode(cookies['access_token'], verify=False, algorithms='HS256')
+    decoded = jwt.decode(cookies['access_token'], "my_secret_key", algorithms='HS256')
     if 'UserID' not in decoded:
         fail('unable to find UUID in access token - tests may fail')
         return ''
@@ -21,6 +21,17 @@ def main():
     response = requests.post(url, json=payload)
     global user_cookies
     user_cookies = response.cookies
+
+    if len(response.cookies) != 2:
+        fail('expected 2 cookies but got {}'.format(len(response.cookies)))
+    if 'access_token' not in response.cookies:
+        fail('access_token not in cookies')
+    if 'refresh_token' not in response.cookies:
+        fail('refresh_token not in cookies')
+
+
+
+
     global user_uuid
     user_uuid = extract_uuid(user_cookies)
 

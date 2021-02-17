@@ -57,6 +57,8 @@ def test_signin():
     url = "http://localhost:80/api/auth/signin"
     payload = {'username': 'test_user2', 'email': 'test_email2@berkeley.edu', 'password': 'test_password2'}
     response = requests.post(url, json=payload)
+    print(response.text)
+
     if response.status_code != 200:
         fail('expected status code 200 but was {}'.format(response.status_code))
     if len(response.cookies) != 2:

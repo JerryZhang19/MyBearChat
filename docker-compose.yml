@@ -57,7 +57,7 @@ services:
             bearchat:
               ipv4_address:
                 172.28.1.4
-                
+
     friends-service:
           build: ./friends
           container_name: friends-service

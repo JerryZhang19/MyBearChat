@@ -1,12 +1,12 @@
 package api
 
 import (
-	"net/http"
-	"github.com/gorilla/mux"
-	"log"
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
+	"log"
+	"net/http"
 )
 
 const NeptuneURL = "https://<your_neptune_writer_endpoint>:8182/gremlin"
