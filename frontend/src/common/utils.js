@@ -42,5 +42,5 @@ export function request(method, url, qs, body) {
   });
 }
 
-export const HOST = "localhost";
+export const HOST = "ec2-3-14-81-168.us-east-2.compute.amazonaws.com";
 
