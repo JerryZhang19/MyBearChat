@@ -164,7 +164,7 @@ func signin(w http.ResponseWriter, r *http.Request) {
 
 	// Check if hashed password matches the one corresponding to the email
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(credentials.Password))
-	if logErr(err,w,"error generating encrypted password") {return}
+	if err!=nil {reportErr(w,http.StatusConflict,"wrong password"); return}
 
 
 	//Generate an access token, expiry dates are in Unix time
@@ -354,4 +354,9 @@ func logErr(err error,w http.ResponseWriter, message string) bool {
 		log.Print(err.Error())
 	}
 	return err != nil
+}
+
+func reportErr(w http.ResponseWriter, statusCode int, message string){
+	http.Error(w, message, statusCode)
+	log.Print(message)
 }
