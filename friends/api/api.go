@@ -33,16 +33,17 @@ func getUUID (w http.ResponseWriter, r *http.Request) (uuid string) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		log.Print(err.Error())
+		return ""
 	}
 	log.Println(claims)
-
-	
 
 	return claims["UserID"].(string)
 }
 
 func getFriends (w http.ResponseWriter, r *http.Request) {
 	uuid := getUUID(w, r)
+	if uuid=="" {return}
+
 	gq := "g.V().has('uuid', '" + uuid + "').out('friends with').values('uuid')"
 	response, err := makeNeptuneRequest(gq)
 	// var req_body map[string]string
@@ -72,6 +73,8 @@ func getFriends (w http.ResponseWriter, r *http.Request) {
 func areFriends(w http.ResponseWriter, r *http.Request) {
 	otherUUID := mux.Vars(r)["uuid"]
 	uuid := getUUID(w, r)
+	if uuid=="" {return}
+
 	gq := "g.V().has('uuid', '" + uuid + "').outE('friends with').where(otherV().has('uuid', '" + otherUUID + "')).count()"
 	response, err := makeNeptuneRequest(gq)
 	if err != nil {
@@ -90,7 +93,6 @@ func areFriends(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Fprint(w, true)
 	}
-
 	return
 
 }
@@ -98,6 +100,8 @@ func areFriends(w http.ResponseWriter, r *http.Request) {
 func addFriend(w http.ResponseWriter, r *http.Request) {
 	otherUUID := mux.Vars(r)["uuid"]
 	uuid := getUUID(w, r)
+	if uuid == "" {return}
+
 	gq := "g.addE('friends with').from(g.V().has('uuid', '" + uuid + "')).to(g.V().has('uuid', '" + otherUUID + "'))"
 	_, err := makeNeptuneRequest(gq)
 	if err != nil {
@@ -116,6 +120,7 @@ func addFriend(w http.ResponseWriter, r *http.Request) {
 
 func addUser (w http.ResponseWriter, r *http.Request) {
 	uuid := getUUID(w, r)
+	if uuid == "" {return}
 	gq := "g.addV().property('uuid', '" + uuid + "')"
 	_, err := makeNeptuneRequest(gq)
 	if err != nil {

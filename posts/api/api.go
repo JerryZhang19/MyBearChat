@@ -35,9 +35,9 @@ func getUUID (w http.ResponseWriter, r *http.Request) (uuid string) {
 	if err != nil {
 		http.Error(w, errors.New("error validating token: " + err.Error()).Error(), http.StatusUnauthorized)
 		log.Print(err.Error())
+		return ""
 	}
 	log.Println(claims)
-
 	return claims["UserID"].(string)
 }
 
@@ -56,6 +56,9 @@ func getPosts(w http.ResponseWriter, r *http.Request) {
 	// Compare that to the uuid we got from the url parameters, if they're not the same, return an error http.StatusUnauthorized
 	// YOUR CODE HERE
 	userUuid := getUUID(w, r)
+	if userUuid == "" {return}
+
+
 	if userUuid != requestedUuid{
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		log.Print("Unauthorized uuid don't match")
@@ -103,6 +106,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	// Obtain the userID from the JSON Web Token
 	// See getUUID(...)
 	userUuid := getUUID(w, r)
+	if userUuid == "" {return}
 
 	// Create a Post object and then Decode the JSON Body (which has the structure of a Post) into that object
 	post := Post{}
