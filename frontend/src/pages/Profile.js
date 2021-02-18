@@ -14,10 +14,12 @@ function Profile(props) {
   console.log("Requested profile ID:", uuid);
   console.log("Our uuid:", ourUUID);
 
+  if (uuid ===  undefined) {uuid = ourUUID}
+
   const [profile, setProfile] = useState(null);
 
   if (profile === null) {
-    request('GET', `http://${HOST}:82/api/profile/${ourUUID}`, {})
+    request('GET', `http://${HOST}:82/api/profile/${uuid}`, {})
         .then((res) => {
           // console.log(res.responseText);
           setProfile(JSON.parse(res.responseText));
