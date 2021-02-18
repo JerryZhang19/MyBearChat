@@ -53,7 +53,7 @@ function PostFeed(props) {
       postsHtml.push(
         <Card style={{ width: '35rem' }} key={idx}>
           <Card.Body>
-            <Card.Title><a href={`/profile/${post.authorID}`}>User ID {post.AuthorID}</a></Card.Title>
+            <Card.Title><a href={`/profile/${post.AuthorID}`}>User ID {post.AuthorID}</a></Card.Title>
             <Card.Subtitle className="mb-2 text-muted">Posted at {post.postTime}</Card.Subtitle>
             <Card.Text>{post.postBody}</Card.Text>
 
