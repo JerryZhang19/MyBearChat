@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const NeptuneURL = "https://<your_neptune_writer_endpoint>:8182/gremlin"
+const NeptuneURL = "https://bearchat-1.cluster-ce72obg7tmxz.us-east-2.neptune.amazonaws.com:8182/gremlin"
 
 func RegisterRoutes(router *mux.Router) error {
 	router.HandleFunc("/api/friends/{uuid}", areFriends).Methods(http.MethodGet, http.MethodOptions)
