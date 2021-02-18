@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -25,18 +26,19 @@ func RegisterRoutes(router *mux.Router) error {
 func getUUID (w http.ResponseWriter, r *http.Request) (uuid string) {
 	cookie, err := r.Cookie("access_token")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, errors.New("error obtaining cookie: " + err.Error()).Error(), http.StatusBadRequest)
 		log.Print(err.Error())
+		return ""
 	}
 	//validate the cookie
 	claims, err := ValidateToken(cookie.Value)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
+		http.Error(w, errors.New("error validating token: " + err.Error()).Error(), http.StatusUnauthorized)
 		log.Print(err.Error())
 		return ""
 	}
+	if claims == nil {return ""}
 	log.Println(claims)
-
 	return claims["UserID"].(string)
 }
 

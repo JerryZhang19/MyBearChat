@@ -29,6 +29,7 @@ func getUUID (w http.ResponseWriter, r *http.Request) (uuid string) {
 	if err != nil {
 		http.Error(w, errors.New("error obtaining cookie: " + err.Error()).Error(), http.StatusBadRequest)
 		log.Print(err.Error())
+		return ""
 	}
 	//validate the cookie
 	claims, err := ValidateToken(cookie.Value)
@@ -37,6 +38,7 @@ func getUUID (w http.ResponseWriter, r *http.Request) (uuid string) {
 		log.Print(err.Error())
 		return ""
 	}
+	if claims == nil {return ""}
 	log.Println(claims)
 	return claims["UserID"].(string)
 }
