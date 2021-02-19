@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-const NeptuneURL = "https://bearchat-1.cluster-ce72obg7tmxz.us-east-2.neptune.amazonaws.com:8182/gremlin"
+const NeptuneURL = "https://bearchat-2-instance-1.ce72obg7tmxz.us-east-2.neptune.amazonaws.com:8182/gremlin"
 
 func RegisterRoutes(router *mux.Router) error {
 	router.HandleFunc("/api/friends/{uuid}", areFriends).Methods(http.MethodGet, http.MethodOptions)
@@ -108,6 +108,8 @@ func addFriend(w http.ResponseWriter, r *http.Request) {
 	_, err := makeNeptuneRequest(gq)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Print("error making first graph query")
+		log.Print(err.Error())
 		return
 	}
 
@@ -115,6 +117,8 @@ func addFriend(w http.ResponseWriter, r *http.Request) {
 	_, err = makeNeptuneRequest(gq)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Print("error making second graph query")
+		log.Print(err.Error())
 		return
 	}
 	return

@@ -132,6 +132,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 	err = SendEmail(cred.Email, "Email Verification", "user-signup.html", map[string]interface{}{"Token": verificationToken})
 	if logErr(err,w,"error sending verification email") {return}
 
+
 	w.WriteHeader(http.StatusCreated)
 	return
 }
